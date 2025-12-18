@@ -238,6 +238,9 @@ const App = {
     if (this.currentModule === 'dashboard' && window.DashboardModule) {
       DashboardModule.cleanup();
     }
+    if (this.currentModule === 'clienti' && window.ClientiModule) {
+    ClientiModule.cleanup();
+    }
 
     // Carica il modulo richiesto
     switch (moduleName) {
@@ -248,7 +251,15 @@ const App = {
           this.showModulePlaceholder(container, moduleName);
         }
         break;
-      
+
+      case 'clienti':
+        if (window.ClientiModule) {
+          ClientiModule.init();
+          } else {
+          this.showModulePlaceholder(container, moduleName);
+        }
+        break;
+
       default:
         this.showModulePlaceholder(container, moduleName);
         break;
