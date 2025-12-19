@@ -24,24 +24,29 @@ const ClientiModule = {
   /**
    * Inizializza il modulo
    */
-  async init() {
-    console.log('👥 Clienti - Inizializzazione...');
-    
-    this.container = document.getElementById('module-container');
-    if (!this.container) return;
-    
-    // Carica stati da Impostazioni (o usa default)
-    await this.loadStatiPratica();
-    
-    // Carica consulenti
-    await this.loadConsulenti();
-    
-    // Render e setup
-    this.render();
-    this.setupEventListeners();
-    this.loadClienti();
-    
-    console.log('✅ Clienti - Pronto!');
+  async loadStatiPratica() {
+    const db = window.FirebaseConfig.getDb();
+    if (!db) {
+      this.statiPratica = this.getDefaultStati();
+      return;
+    }
+
+    try {
+      const snapshot = await db.collection('stati').orderBy('ordine').get();
+      if (!snapshot.empty) {
+        this.statiPratica = snapshot.docs.map(doc => ({
+          id: doc.id,
+          label: doc.data().nome,
+          color: doc.data().colore,
+          ordine: doc.data().ordine
+        }));
+      } else {
+        this.statiPratica = this.getDefaultStati();
+      }
+    } catch (error) {
+      console.log('Stati pratica: uso default', error);
+      this.statiPratica = this.getDefaultStati();
+    }
   },
 
   /**
@@ -59,25 +64,7 @@ const ClientiModule = {
   /**
    * Carica stati pratica da Impostazioni o usa default
    */
-  async loadStatiPratica() {
-    const db = window.FirebaseConfig.getDb();
-    if (!db) {
-      this.statiPratica = this.getDefaultStati();
-      return;
-    }
-
-    try {
-      const doc = await db.collection('impostazioni').doc('stati_pratica').get();
-      if (doc.exists && doc.data().stati) {
-        this.statiPratica = doc.data().stati;
-      } else {
-        this.statiPratica = this.getDefaultStati();
-      }
-    } catch (error) {
-      console.log('Stati pratica: uso default');
-      this.statiPratica = this.getDefaultStati();
-    }
-  },
+  
 
   /**
    * Stati di default
