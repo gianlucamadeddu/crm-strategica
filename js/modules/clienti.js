@@ -1357,13 +1357,6 @@ sendWhatsAppTemplate(template) {
   App.showToast('Apertura WhatsApp...', 'success');
 },
 
-    const phone = this.clienteCorrente.telefono.replace(/\s+/g, '').replace(/^\+/, '');
-    const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-    window.open(url, '_blank');
-
-    this.closeModal('modal-whatsapp');
-  },
-
   /**
    * Open Modal Appuntamento
    */
