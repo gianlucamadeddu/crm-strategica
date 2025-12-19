@@ -85,11 +85,6 @@ const ClientiModule = {
   },
 
   /**
-   * Carica stati pratica da Impostazioni o usa default
-   */
-  
-
-  /**
    * Stati di default
    */
   getDefaultStati() {
@@ -240,7 +235,7 @@ const ClientiModule = {
         </div>
         
         <!-- Empty State -->
-        <div id="clienti-empty" class="clienti-empty hidden">
+        <div id="clienti-empty" class="clienti-empty" style="display: none;">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
           </svg>
@@ -267,7 +262,7 @@ const ClientiModule = {
     const isTeamManager = user?.ruolo === 'team_manager';
 
     return `
-      <div id="modal-cliente" class="modal-overlay hidden">
+      <div id="modal-cliente" class="modal-overlay" style="display: none;">
         <div class="modal-container modal-lg">
           <div class="modal-header">
             <h2 id="modal-cliente-title">Nuovo Cliente</h2>
@@ -362,7 +357,7 @@ const ClientiModule = {
    */
   renderModalDettaglio() {
     return `
-      <div id="modal-dettaglio" class="modal-overlay hidden">
+      <div id="modal-dettaglio" class="modal-overlay" style="display: none;">
         <div class="modal-container modal-xl">
           <div class="modal-header">
             <div class="modal-header-left">
@@ -466,7 +461,7 @@ const ClientiModule = {
    */
   renderModalWhatsApp() {
     return `
-      <div id="modal-whatsapp" class="modal-overlay hidden">
+      <div id="modal-whatsapp" class="modal-overlay" style="display: none;">
         <div class="modal-container modal-sm">
           <div class="modal-header">
             <h2>
@@ -508,7 +503,7 @@ const ClientiModule = {
    */
   renderModalAppuntamento() {
     return `
-      <div id="modal-appuntamento" class="modal-overlay hidden">
+      <div id="modal-appuntamento" class="modal-overlay" style="display: none;">
         <div class="modal-container">
           <div class="modal-header">
             <h2>Fissa Appuntamento</h2>
@@ -561,7 +556,7 @@ const ClientiModule = {
    */
   renderModalElimina() {
     return `
-      <div id="modal-elimina" class="modal-overlay hidden">
+      <div id="modal-elimina" class="modal-overlay" style="display: none;">
         <div class="modal-container modal-sm">
           <div class="modal-header">
             <h2>Conferma Eliminazione</h2>
@@ -627,7 +622,7 @@ const ClientiModule = {
     // Click su overlay per chiudere
     document.querySelectorAll('.modal-overlay').forEach(modal => {
       modal.addEventListener('click', (e) => {
-        if (e.target === modal) modal.classList.add('hidden');
+        if (e.target === modal) modal.style.display = 'none';
       });
     });
 
@@ -644,7 +639,7 @@ const ClientiModule = {
 
     // WhatsApp button
     document.getElementById('btn-whatsapp')?.addEventListener('click', () => {
-      document.getElementById('modal-whatsapp').classList.remove('hidden');
+      document.getElementById('modal-whatsapp').style.display = 'flex';
     });
 
     // Appuntamento button
@@ -738,6 +733,7 @@ const ClientiModule = {
   renderClienti() {
     const tbody = document.getElementById('clienti-tbody');
     const emptyState = document.getElementById('clienti-empty');
+    const tableContainer = document.querySelector('.clienti-table-container');
     if (!tbody) return;
 
     let clientiFiltrati = this.clienti.filter(c => {
@@ -758,13 +754,13 @@ const ClientiModule = {
 
     if (clientiFiltrati.length === 0) {
       tbody.innerHTML = '';
-      emptyState?.classList.remove('hidden');
-      document.querySelector('.clienti-table-container')?.classList.add('hidden');
+      if (emptyState) emptyState.style.display = 'flex';
+      if (tableContainer) tableContainer.style.display = 'none';
       return;
     }
 
-    emptyState?.classList.add('hidden');
-    document.querySelector('.clienti-table-container')?.classList.remove('hidden');
+    if (emptyState) emptyState.style.display = 'none';
+    if (tableContainer) tableContainer.style.display = 'block';
 
     tbody.innerHTML = clientiFiltrati.map(cliente => {
       const stato = this.statiPratica.find(s => s.id === cliente.stato) || this.statiPratica[0];
@@ -847,7 +843,7 @@ const ClientiModule = {
       if (sel) sel.value = user.id;
     }
     
-    document.getElementById('modal-cliente').classList.remove('hidden');
+    document.getElementById('modal-cliente').style.display = 'flex';
   },
 
   /**
@@ -872,7 +868,7 @@ const ClientiModule = {
     const selCons = document.getElementById('cliente-consulente');
     if (selCons) selCons.value = cliente.consulenteId || '';
 
-    document.getElementById('modal-cliente').classList.remove('hidden');
+    document.getElementById('modal-cliente').style.display = 'flex';
   },
 
   /**
@@ -916,7 +912,7 @@ const ClientiModule = {
     // Reset to first tab
     this.switchTab('info');
 
-    document.getElementById('modal-dettaglio').classList.remove('hidden');
+    document.getElementById('modal-dettaglio').style.display = 'flex';
   },
 
   /**
@@ -1337,7 +1333,7 @@ const ClientiModule = {
     form.reset();
     document.getElementById('app-titolo').value = `Appuntamento con ${this.clienteCorrente.nome} ${this.clienteCorrente.cognome}`;
     
-    document.getElementById('modal-appuntamento').classList.remove('hidden');
+    document.getElementById('modal-appuntamento').style.display = 'flex';
   },
 
   /**
@@ -1489,7 +1485,7 @@ const ClientiModule = {
    */
   openModalElimina(clienteId) {
     document.getElementById('elimina-cliente-id').value = clienteId;
-    document.getElementById('modal-elimina').classList.remove('hidden');
+    document.getElementById('modal-elimina').style.display = 'flex';
   },
 
   /**
@@ -1516,7 +1512,8 @@ const ClientiModule = {
    * Close Modal
    */
   closeModal(modalId) {
-    document.getElementById(modalId)?.classList.add('hidden');
+    const modal = document.getElementById(modalId);
+    if (modal) modal.style.display = 'none';
   },
 
   /**
