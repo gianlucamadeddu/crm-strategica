@@ -24,6 +24,29 @@ const ClientiModule = {
   /**
    * Inizializza il modulo
    */
+  async init() {
+    console.log('👥 Clienti - Inizializzazione...');
+    
+    this.container = document.getElementById('module-container');
+    if (!this.container) return;
+    
+    // Carica stati da Impostazioni (o usa default)
+    await this.loadStatiPratica();
+    
+    // Carica consulenti
+    await this.loadConsulenti();
+    
+    // Render e setup
+    this.render();
+    this.setupEventListeners();
+    this.loadClienti();
+    
+    console.log('✅ Clienti - Pronto!');
+  },
+
+  /**
+   * Carica stati pratica
+   */
   async loadStatiPratica() {
     const db = window.FirebaseConfig.getDb();
     if (!db) {
