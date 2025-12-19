@@ -247,6 +247,9 @@ const App = {
     if (this.currentModule === 'impostazioni' && window.ImpostazioniModule) {
       ImpostazioniModule.cleanup();
     }
+    if (this.currentModule === 'messaggi' && window.MessaggiModule) {
+  MessaggiModule.cleanup();
+}
 
     // Carica il modulo richiesto
     switch (moduleName) {
@@ -277,6 +280,14 @@ const App = {
       case 'impostazioni':
         if (window.ImpostazioniModule) {
           ImpostazioniModule.init();
+        } else {
+          this.showModulePlaceholder(container, moduleName);
+        }
+        break;
+        
+        case 'messaggi':
+        if (window.MessaggiModule) {
+          MessaggiModule.init();
         } else {
           this.showModulePlaceholder(container, moduleName);
         }
