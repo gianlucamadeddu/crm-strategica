@@ -460,43 +460,31 @@ const ClientiModule = {
    * Modal WhatsApp Templates
    */
   renderModalWhatsApp() {
-    return `
-      <div id="modal-whatsapp" class="modal-overlay" style="display: none;">
-        <div class="modal-container modal-sm">
-          <div class="modal-header">
-            <h2>
-              <svg viewBox="0 0 24 24" fill="#25D366" style="width:24px;height:24px;margin-right:8px;vertical-align:middle">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-              </svg>
-              Template WhatsApp
-            </h2>
-            <button class="modal-close" data-close-modal="modal-whatsapp">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div id="whatsapp-templates" class="whatsapp-templates">
-              <p class="text-muted">I template saranno configurabili dal modulo Messaggi</p>
-              <div class="template-item" data-template="benvenuto">
-                <strong>Benvenuto</strong>
-                <p>Gentile Cliente, benvenuto in Strategica...</p>
-              </div>
-              <div class="template-item" data-template="documenti">
-                <strong>Richiesta Documenti</strong>
-                <p>Gentile Cliente, per procedere necessitiamo...</p>
-              </div>
-              <div class="template-item" data-template="appuntamento">
-                <strong>Conferma Appuntamento</strong>
-                <p>Le confermiamo l'appuntamento per...</p>
-              </div>
-            </div>
+  return `
+    <div id="modal-whatsapp" class="modal-overlay" style="display: none;">
+      <div class="modal-container modal-sm">
+        <div class="modal-header">
+          <h2>
+            <svg viewBox="0 0 24 24" fill="#25D366" style="width:24px;height:24px;margin-right:8px;vertical-align:middle">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+            Seleziona Template
+          </h2>
+          <button class="modal-close" data-close-modal="modal-whatsapp">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div id="whatsapp-templates" class="whatsapp-templates-dynamic">
+            <div class="whatsapp-loading">Caricamento template...</div>
           </div>
         </div>
       </div>
-    `;
-  },
+    </div>
+  `;
+},
 
   /**
    * Modal Appuntamento
@@ -639,7 +627,7 @@ const ClientiModule = {
 
     // WhatsApp button
     document.getElementById('btn-whatsapp')?.addEventListener('click', () => {
-      document.getElementById('modal-whatsapp').style.display = 'flex';
+      this.openModalWhatsApp();
     });
 
     // Appuntamento button
@@ -652,14 +640,6 @@ const ClientiModule = {
       btn.addEventListener('click', (e) => {
         const tab = e.currentTarget.dataset.tab;
         this.switchTab(tab);
-      });
-    });
-
-    // WhatsApp templates
-    document.querySelectorAll('.template-item').forEach(item => {
-      item.addEventListener('click', (e) => {
-        const template = e.currentTarget.dataset.template;
-        this.sendWhatsApp(template);
       });
     });
 
@@ -1295,26 +1275,87 @@ const ClientiModule = {
   /**
    * Send WhatsApp
    */
-  sendWhatsApp(template) {
-    if (!this.clienteCorrente?.telefono) {
-      App.showToast('Nessun numero di telefono disponibile', 'warning');
-      return;
-    }
+  /**
+ * Apre modal WhatsApp e carica templates da Firebase
+ */
+async openModalWhatsApp() {
+  if (!this.clienteCorrente) return;
+  
+  const modal = document.getElementById('modal-whatsapp');
+  const container = document.getElementById('whatsapp-templates');
+  
+  modal.style.display = 'flex';
+  container.innerHTML = '<div class="whatsapp-loading">Caricamento template...</div>';
+  
+  // Carica templates da Firebase
+  const templates = await loadTemplatesWhatsApp();
+  
+  if (templates.length === 0) {
+    container.innerHTML = `
+      <div class="whatsapp-empty">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" />
+        </svg>
+        <p>Nessun template disponibile</p>
+        <small>Chiedi all'Admin di creare dei template</small>
+      </div>
+    `;
+    return;
+  }
+  
+  // Mostra templates
+  container.innerHTML = templates.map(tmpl => `
+    <div class="template-item-dynamic" data-template-id="${tmpl.id}">
+      <strong>${this.escapeHtml(tmpl.nome)}</strong>
+      <p>${this.escapeHtml(tmpl.testo)}</p>
+    </div>
+  `).join('');
+  
+  // Event listener per click su template
+  container.querySelectorAll('.template-item-dynamic').forEach(item => {
+    item.addEventListener('click', () => {
+      const templateId = item.dataset.templateId;
+      const template = templates.find(t => t.id === templateId);
+      if (template) {
+        this.sendWhatsAppTemplate(template);
+      }
+    });
+  });
+},
+  
+  /**
+ * Invia messaggio WhatsApp con template
+ * @param {object} template - Template da Firebase
+ */
+sendWhatsAppTemplate(template) {
+  if (!this.clienteCorrente?.telefono) {
+    App.showToast('Nessun numero di telefono disponibile', 'warning');
+    return;
+  }
 
-    let message = '';
-    switch (template) {
-      case 'benvenuto':
-        message = `Gentile ${this.clienteCorrente.nome}, benvenuto in Strategica!`;
-        break;
-      case 'documenti':
-        message = `Gentile ${this.clienteCorrente.nome}, per procedere con la pratica necessitiamo della seguente documentazione...`;
-        break;
-      case 'appuntamento':
-        message = `Gentile ${this.clienteCorrente.nome}, le confermiamo l'appuntamento per...`;
-        break;
-      default:
-        message = `Gentile ${this.clienteCorrente.nome},`;
-    }
+  // Applica placeholder
+  const message = applicaPlaceholder(template.testo, this.clienteCorrente);
+
+  // Formatta numero telefono
+  let phone = this.clienteCorrente.telefono.replace(/\s+/g, '').replace(/[^0-9+]/g, '');
+  
+  // Se inizia con 0, aggiungi prefisso Italia
+  if (phone.startsWith('0')) {
+    phone = '39' + phone.substring(1);
+  }
+  // Se non ha prefisso, aggiungi Italia
+  if (!phone.startsWith('+') && !phone.startsWith('39')) {
+    phone = '39' + phone;
+  }
+  // Rimuovi + se presente
+  phone = phone.replace(/^\+/, '');
+
+  const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+  window.open(url, '_blank');
+
+  this.closeModal('modal-whatsapp');
+  App.showToast('Apertura WhatsApp...', 'success');
+},
 
     const phone = this.clienteCorrente.telefono.replace(/\s+/g, '').replace(/^\+/, '');
     const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
