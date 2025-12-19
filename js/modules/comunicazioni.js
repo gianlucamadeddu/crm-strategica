@@ -228,7 +228,7 @@ const ComunicazioniModule = {
       </div>
 
       <!-- Modal Dettaglio Comunicazione -->
-      <div class="modal-overlay hidden" id="modal-dettaglio-com">
+      <div class="modal-overlay" id="modal-dettaglio-com">
         <div class="modal-container modal-lg">
           <div class="modal-header">
             <div class="modal-header-left">
@@ -265,7 +265,7 @@ const ComunicazioniModule = {
 
       <!-- Modal Nuova/Modifica Comunicazione (solo Admin) -->
       ${isAdmin ? `
-        <div class="modal-overlay hidden" id="modal-form-com">
+        <div class="modal-overlay" id="modal-form-com">
           <div class="modal-container">
             <div class="modal-header">
               <h2 id="modal-form-title">Nuova Comunicazione</h2>
@@ -312,7 +312,7 @@ const ComunicazioniModule = {
 
       <!-- Modal Conferma Eliminazione -->
       ${isAdmin ? `
-        <div class="modal-overlay hidden" id="modal-conferma-elimina">
+        <div class="modal-overlay" id="modal-conferma-elimina">
           <div class="modal-container modal-sm">
             <div class="modal-header">
               <h2>Conferma Eliminazione</h2>
@@ -393,7 +393,7 @@ const ComunicazioniModule = {
     document.querySelectorAll('.modal-overlay').forEach(modal => {
       modal.addEventListener('click', (e) => {
         if (e.target === modal) {
-          modal.classList.add('hidden');
+          modal.classList.remove('active');
         }
       });
     });
@@ -520,15 +520,15 @@ const ComunicazioniModule = {
       this.segnaComeLetta(id);
     }
 
-    // Mostra modal
-    document.getElementById('modal-dettaglio-com').classList.remove('hidden');
+    // Mostra modal con .active
+    document.getElementById('modal-dettaglio-com').classList.add('active');
   },
 
   /**
    * Chiude il modal dettaglio
    */
   closeDettaglioModal() {
-    document.getElementById('modal-dettaglio-com').classList.add('hidden');
+    document.getElementById('modal-dettaglio-com').classList.remove('active');
     this.currentComId = null;
   },
 
@@ -589,7 +589,8 @@ const ComunicazioniModule = {
       document.getElementById('form-com-testo').value = '';
     }
 
-    modal.classList.remove('hidden');
+    // Mostra modal con .active
+    modal.classList.add('active');
   },
 
   /**
@@ -598,7 +599,7 @@ const ComunicazioniModule = {
   closeFormModal() {
     const modal = document.getElementById('modal-form-com');
     if (modal) {
-      modal.classList.add('hidden');
+      modal.classList.remove('active');
     }
   },
 
@@ -686,7 +687,7 @@ const ComunicazioniModule = {
   openDeleteConfirm() {
     const modal = document.getElementById('modal-conferma-elimina');
     if (modal) {
-      modal.classList.remove('hidden');
+      modal.classList.add('active');
     }
   },
 
@@ -696,7 +697,7 @@ const ComunicazioniModule = {
   closeDeleteConfirm() {
     const modal = document.getElementById('modal-conferma-elimina');
     if (modal) {
-      modal.classList.add('hidden');
+      modal.classList.remove('active');
     }
   },
 
