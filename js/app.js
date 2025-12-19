@@ -241,6 +241,9 @@ const App = {
     if (this.currentModule === 'clienti' && window.ClientiModule) {
     ClientiModule.cleanup();
     }
+    if (this.currentModule === 'impostazioni' && window.ImpostazioniModule) {
+      ImpostazioniModule.cleanup();
+    }
 
     // Carica il modulo richiesto
     switch (moduleName) {
@@ -256,6 +259,13 @@ const App = {
         if (window.ClientiModule) {
           ClientiModule.init();
           } else {
+          this.showModulePlaceholder(container, moduleName);
+        }
+        break;
+        case 'impostazioni':
+        if (window.ImpostazioniModule) {
+          ImpostazioniModule.init();
+        } else {
           this.showModulePlaceholder(container, moduleName);
         }
         break;
