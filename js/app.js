@@ -239,7 +239,10 @@ const App = {
       DashboardModule.cleanup();
     }
     if (this.currentModule === 'clienti' && window.ClientiModule) {
-    ClientiModule.cleanup();
+      ClientiModule.cleanup();
+    }
+    if (this.currentModule === 'appuntamenti' && window.AppuntamentiModule) {
+      AppuntamentiModule.cleanup();
     }
     if (this.currentModule === 'impostazioni' && window.ImpostazioniModule) {
       ImpostazioniModule.cleanup();
@@ -258,11 +261,20 @@ const App = {
       case 'clienti':
         if (window.ClientiModule) {
           ClientiModule.init();
-          } else {
+        } else {
           this.showModulePlaceholder(container, moduleName);
         }
         break;
-        case 'impostazioni':
+
+      case 'appuntamenti':
+        if (window.AppuntamentiModule) {
+          AppuntamentiModule.init();
+        } else {
+          this.showModulePlaceholder(container, moduleName);
+        }
+        break;
+
+      case 'impostazioni':
         if (window.ImpostazioniModule) {
           ImpostazioniModule.init();
         } else {
