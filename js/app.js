@@ -249,7 +249,10 @@ const App = {
     }
     if (this.currentModule === 'messaggi' && window.MessaggiModule) {
   MessaggiModule.cleanup();
-}
+    }
+    if (this.currentModule === 'comunicazioni' && window.ComunicazioniModule) {
+     ComunicazioniModule.cleanup();
+    }
 
     // Carica il modulo richiesto
     switch (moduleName) {
@@ -292,6 +295,14 @@ const App = {
           this.showModulePlaceholder(container, moduleName);
         }
         break;
+        
+      case 'comunicazioni':
+     if (window.ComunicazioniModule) {
+       ComunicazioniModule.init();
+     } else {
+       this.showModulePlaceholder(container, moduleName);
+     }
+     break;
 
       default:
         this.showModulePlaceholder(container, moduleName);
