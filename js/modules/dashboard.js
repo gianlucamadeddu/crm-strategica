@@ -6,6 +6,9 @@ const DashboardModule = {
   
   // Riferimenti ai listener Firebase per cleanup
   unsubscribers: [],
+  
+  // Cache degli stati (per mapping ID -> nome)
+  statiMap: {},
 
   /**
    * Inizializza e renderizza la dashboard
@@ -16,7 +19,8 @@ const DashboardModule = {
     // Renderizza la struttura HTML
     this.render();
     
-    // Carica i dati in tempo reale
+    // Carica prima gli stati, poi i dati
+    await this.loadStati();
     this.setupRealtimeListeners();
     
     console.log('✅ Dashboard - Pronta!');
@@ -78,7 +82,7 @@ const DashboardModule = {
             </div>
           </div>
 
-          <!-- Pratiche Completate -->
+          <!-- Clienti con Contratto Firmato -->
           <div class="stat-card">
             <div class="stat-icon stat-icon-success">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -86,23 +90,23 @@ const DashboardModule = {
               </svg>
             </div>
             <div class="stat-content">
-              <div class="stat-label">Completati</div>
-              <div id="stat-completati" class="stat-value">
+              <div class="stat-label">Contratto Firmato</div>
+              <div id="stat-contratto-firmato" class="stat-value">
                 <span class="stat-loading"></span>
               </div>
             </div>
           </div>
 
-          <!-- Pratiche In Attesa -->
+          <!-- Clienti Nuovi -->
           <div class="stat-card">
             <div class="stat-icon stat-icon-warning">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
             <div class="stat-content">
-              <div class="stat-label">In Attesa</div>
-              <div id="stat-attesa" class="stat-value">
+              <div class="stat-label">Nuovo</div>
+              <div id="stat-nuovo" class="stat-value">
                 <span class="stat-loading"></span>
               </div>
             </div>
@@ -113,19 +117,19 @@ const DashboardModule = {
         <!-- Contenuto principale -->
         <div class="dashboard-content">
           
-          <!-- Colonna sinistra: Pratiche Recenti -->
+          <!-- Colonna sinistra: Clienti Recenti -->
           <div class="dashboard-column">
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
                   </svg>
-                  Pratiche Recenti
+                  Clienti Recenti
                 </h3>
               </div>
               <div class="card-body">
-                <div id="lista-pratiche" class="lista-items">
+                <div id="lista-clienti" class="lista-items">
                   <div class="loading-placeholder">
                     <span class="stat-loading"></span>
                     <span>Caricamento...</span>
@@ -187,6 +191,37 @@ const DashboardModule = {
   },
 
   /**
+   * Carica gli stati da Firebase e crea una mappa ID -> nome
+   */
+  async loadStati() {
+    const db = window.FirebaseConfig.getDb();
+    if (!db) return;
+
+    try {
+      const snapshot = await db.collection('stati').get();
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        this.statiMap[doc.id] = data.nome;
+      });
+      console.log('📋 Stati caricati:', this.statiMap);
+    } catch (error) {
+      console.error('Errore caricamento stati:', error);
+    }
+  },
+
+  /**
+   * Trova l'ID dello stato dato il nome
+   */
+  getStatoIdByNome(nomeStato) {
+    for (const [id, nome] of Object.entries(this.statiMap)) {
+      if (nome === nomeStato) {
+        return id;
+      }
+    }
+    return null;
+  },
+
+  /**
    * Configura i listener real-time Firebase
    */
   setupRealtimeListeners() {
@@ -200,7 +235,7 @@ const DashboardModule = {
     // Carica statistiche e liste
     this.loadClienti(db);
     this.loadAppuntamenti(db);
-    this.loadPratiche(db);
+    this.loadClientiRecenti(db);
     this.loadComunicazioni(db);
   },
 
@@ -245,7 +280,7 @@ const DashboardModule = {
   },
 
   /**
-   * Carica conteggio clienti
+   * Carica conteggio clienti e statistiche per stato
    */
   loadClienti(db) {
     const user = AuthManager.getCurrentUser();
@@ -264,10 +299,34 @@ const DashboardModule = {
       (snapshot) => {
         const count = snapshot.size;
         document.getElementById('stat-clienti').textContent = count;
+
+        // Conta per stato
+        let contrattoFirmato = 0;
+        let nuovo = 0;
+
+        // Trova gli ID degli stati
+        const idContrattoFirmato = this.getStatoIdByNome('Contratto Firmato');
+        const idNuovo = this.getStatoIdByNome('Nuovo');
+
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          
+          if (data.stato === idContrattoFirmato) {
+            contrattoFirmato++;
+          } else if (data.stato === idNuovo) {
+            nuovo++;
+          }
+        });
+
+        // Aggiorna contatori
+        document.getElementById('stat-contratto-firmato').textContent = contrattoFirmato;
+        document.getElementById('stat-nuovo').textContent = nuovo;
       },
       (error) => {
         console.error('Errore caricamento clienti:', error);
         document.getElementById('stat-clienti').textContent = '0';
+        document.getElementById('stat-contratto-firmato').textContent = '0';
+        document.getElementById('stat-nuovo').textContent = '0';
       }
     );
 
@@ -327,21 +386,19 @@ const DashboardModule = {
   },
 
   /**
-   * Carica pratiche recenti con stati
+   * Carica clienti recenti
    */
-  loadPratiche(db) {
+  loadClientiRecenti(db) {
     const user = AuthManager.getCurrentUser();
     if (!user) return;
 
-    let query = db.collection('pratiche')
-      .orderBy('dataAggiornamento', 'desc')
-      .limit(10);
+    let query = db.collection('clienti')
+      .orderBy('dataModifica', 'desc')
+      .limit(5);
 
     const unsubscribe = query.onSnapshot(
       (snapshot) => {
-        let pratiche = [];
-        let completati = 0;
-        let inAttesa = 0;
+        let clienti = [];
 
         snapshot.forEach(doc => {
           const data = doc.data();
@@ -358,29 +415,16 @@ const DashboardModule = {
           }
 
           if (include) {
-            pratiche.push(data);
-            
-            // Conta stati
-            if (data.stato === 'completato' || data.stato === 'approvato') {
-              completati++;
-            } else if (data.stato === 'in_attesa' || data.stato === 'pending') {
-              inAttesa++;
-            }
+            clienti.push(data);
           }
         });
 
-        // Aggiorna contatori
-        document.getElementById('stat-completati').textContent = completati;
-        document.getElementById('stat-attesa').textContent = inAttesa;
-        
         // Aggiorna lista (max 5 elementi)
-        this.renderPratiche(pratiche.slice(0, 5));
+        this.renderClientiRecenti(clienti.slice(0, 5));
       },
       (error) => {
-        console.error('Errore caricamento pratiche:', error);
-        document.getElementById('stat-completati').textContent = '0';
-        document.getElementById('stat-attesa').textContent = '0';
-        this.renderPratiche([]);
+        console.error('Errore caricamento clienti recenti:', error);
+        this.renderClientiRecenti([]);
       }
     );
 
@@ -394,10 +438,14 @@ const DashboardModule = {
     const user = AuthManager.getCurrentUser();
     if (!user) return;
 
+    // Carica le comunicazioni lette da localStorage
+    const key = `comunicazioni_lette_${user.id}`;
+    const letteSaved = StorageWrapper.get(key) || [];
+    const letteIds = new Set(letteSaved);
+
     let query = db.collection('comunicazioni')
-      .where('letto', '==', false)
       .orderBy('dataCreazione', 'desc')
-      .limit(5);
+      .limit(10);
 
     const unsubscribe = query.onSnapshot(
       (snapshot) => {
@@ -407,14 +455,14 @@ const DashboardModule = {
           const data = doc.data();
           data.id = doc.id;
           
-          // Filtro per destinatario
-          // Admin vede tutte, altri vedono solo quelle a loro destinate
-          if (user.ruolo === 'admin' || 
-              data.destinatarioId === user.id || 
-              data.destinatarioId === 'tutti') {
+          // Filtra solo le non lette
+          if (!letteIds.has(doc.id)) {
             comunicazioni.push(data);
           }
         });
+
+        // Limita a 5
+        comunicazioni = comunicazioni.slice(0, 5);
 
         // Aggiorna badge
         const badge = document.getElementById('badge-notifiche');
@@ -486,37 +534,43 @@ const DashboardModule = {
   },
 
   /**
-   * Renderizza lista pratiche
+   * Renderizza lista clienti recenti
    */
-  renderPratiche(pratiche) {
-    const container = document.getElementById('lista-pratiche');
+  renderClientiRecenti(clienti) {
+    const container = document.getElementById('lista-clienti');
     if (!container) return;
 
-    if (pratiche.length === 0) {
+    if (clienti.length === 0) {
       container.innerHTML = `
         <div class="empty-state">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
           </svg>
-          <span>Nessuna pratica recente</span>
+          <span>Nessun cliente recente</span>
         </div>
       `;
       return;
     }
 
-    container.innerHTML = pratiche.map(pratica => {
-      const dataAgg = pratica.dataAggiornamento?.toDate ? 
-        this.formatDataRelativa(pratica.dataAggiornamento.toDate()) : 
+    container.innerHTML = clienti.map(cliente => {
+      const dataAgg = cliente.dataModifica?.toDate ? 
+        this.formatDataRelativa(cliente.dataModifica.toDate()) : 
         '';
       
+      // Ottieni il nome dello stato dall'ID
+      const nomeStato = this.statiMap[cliente.stato] || 'N/D';
+      
+      // Nome completo del cliente
+      const nomeCompleto = `${cliente.nome || ''} ${cliente.cognome || ''}`.trim() || 'Cliente';
+      
       return `
-        <div class="lista-item lista-item-clickable" data-id="${pratica.id}" data-type="pratica">
+        <div class="lista-item lista-item-clickable" data-id="${cliente.id}" data-type="cliente">
           <div class="lista-item-content">
-            <div class="lista-item-title">${this.escapeHtml(pratica.titolo || pratica.numero || 'Pratica')}</div>
-            <div class="lista-item-subtitle">${this.escapeHtml(pratica.clienteNome || '')} • ${dataAgg}</div>
+            <div class="lista-item-title">${this.escapeHtml(nomeCompleto)}</div>
+            <div class="lista-item-subtitle">${this.escapeHtml(cliente.azienda || '')} • ${dataAgg}</div>
           </div>
           <div class="lista-item-badge">
-            <span class="badge badge-${this.getStatoBadgeClass(pratica.stato)}">${this.formatStato(pratica.stato)}</span>
+            <span class="badge badge-${this.getStatoBadgeClass(nomeStato)}">${nomeStato}</span>
           </div>
         </div>
       `;
@@ -526,7 +580,7 @@ const DashboardModule = {
     container.querySelectorAll('.lista-item').forEach(item => {
       item.addEventListener('click', () => {
         const id = item.dataset.id;
-        this.openPratica(id);
+        this.openCliente(id);
       });
     });
   },
@@ -586,13 +640,13 @@ const DashboardModule = {
   },
 
   /**
-   * Apre dettaglio pratica
+   * Apre dettaglio cliente
    */
-  openPratica(id) {
-    console.log('Apri pratica:', id);
-    // Naviga al modulo clienti/pratiche (quando sarà implementato)
+  openCliente(id) {
+    console.log('Apri cliente:', id);
+    // Naviga al modulo clienti
     App.navigateTo('clienti');
-    App.showToast('Apertura pratica...', 'info');
+    App.showToast('Apertura cliente...', 'info');
   },
 
   /**
@@ -631,8 +685,13 @@ const DashboardModule = {
    */
   getStatoBadgeClass(stato) {
     const mapping = {
-      'nuovo': 'primary',
-      'in_lavorazione': 'warning',
+      'Nuovo': 'warning',
+      'Contatto': 'primary',
+      'Trattativa': 'info',
+      'Contratto Firmato': 'success',
+      'Perso': 'danger',
+      'nuovo': 'warning',
+      'in_lavorazione': 'primary',
       'in_attesa': 'warning',
       'pending': 'warning',
       'completato': 'success',
@@ -689,8 +748,8 @@ const DashboardModule = {
   showError() {
     document.getElementById('stat-clienti').textContent = '0';
     document.getElementById('stat-appuntamenti').textContent = '0';
-    document.getElementById('stat-completati').textContent = '0';
-    document.getElementById('stat-attesa').textContent = '0';
+    document.getElementById('stat-contratto-firmato').textContent = '0';
+    document.getElementById('stat-nuovo').textContent = '0';
     
     const emptyMessage = `
       <div class="empty-state empty-state-error">
@@ -701,7 +760,7 @@ const DashboardModule = {
       </div>
     `;
     
-    document.getElementById('lista-pratiche').innerHTML = emptyMessage;
+    document.getElementById('lista-clienti').innerHTML = emptyMessage;
     document.getElementById('lista-appuntamenti').innerHTML = emptyMessage;
     document.getElementById('lista-notifiche').innerHTML = emptyMessage;
   }
