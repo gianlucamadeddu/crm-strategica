@@ -2591,3 +2591,18 @@
   width: 24px;
   height: 24px;
 }
+
+/* === FIX PULSANTI MODAL DETTAGLIO APPUNTAMENTO === */
+#modal-dettaglio-app .modal-footer {
+  gap: 0.5rem;
+}
+
+#modal-dettaglio-app .modal-footer .btn {
+  padding: 0.5rem 0.875rem;
+  font-size: 0.8125rem;
+}
+
+#modal-dettaglio-app .modal-footer .btn svg {
+  width: 14px;
+  height: 14px;
+}
