@@ -359,6 +359,12 @@ const AppuntamentiModule = {
               </svg>
               Elimina
             </button>
+            <button type="button" id="btn-vai-cliente" class="btn btn-secondary">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:16px;height:16px">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+              </svg>
+              Vai al Cliente
+            </button>
             <button type="button" id="btn-modifica-app" class="btn btn-primary">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:16px;height:16px">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
@@ -482,6 +488,15 @@ const AppuntamentiModule = {
       if (this.appuntamentoCorrente) {
         this.closeModal('modal-dettaglio-app');
         this.openModalModifica(this.appuntamentoCorrente.id);
+      }
+    });
+
+    // Vai al Cliente da dettaglio
+    document.getElementById('btn-vai-cliente')?.addEventListener('click', () => {
+      if (this.appuntamentoCorrente && this.appuntamentoCorrente.clienteId) {
+        this.navigaAlCliente(this.appuntamentoCorrente.clienteId);
+      } else {
+        App.showToast('Nessun cliente associato a questo appuntamento', 'warning');
       }
     });
 
@@ -934,6 +949,31 @@ const AppuntamentiModule = {
   closeModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) modal.style.display = 'none';
+  },
+
+  /**
+   * Naviga alla scheda del cliente
+   */
+  navigaAlCliente(clienteId) {
+    if (!clienteId) {
+      App.showToast('Nessun cliente associato', 'warning');
+      return;
+    }
+
+    // Chiudi il modal dettaglio
+    this.closeModal('modal-dettaglio-app');
+
+    // Naviga al modulo Clienti
+    App.navigateTo('clienti');
+
+    // Aspetta che il modulo sia caricato, poi apri il dettaglio cliente
+    setTimeout(() => {
+      if (window.ClientiModule && typeof ClientiModule.openModalDettaglio === 'function') {
+        ClientiModule.openModalDettaglio(clienteId);
+      } else {
+        App.showToast('Impossibile aprire la scheda cliente', 'error');
+      }
+    }, 500);
   },
 
   /**
