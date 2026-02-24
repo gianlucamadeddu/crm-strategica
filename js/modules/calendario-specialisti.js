@@ -282,14 +282,14 @@ const CalendarioSpecialistiModule = {
    */
   renderModalNuovoSpecialista() {
     const colori = [
-      { value: '#4F46E5', label: 'Indaco' },
-      { value: '#059669', label: 'Verde' },
-      { value: '#D97706', label: 'Ambra' },
-      { value: '#DC2626', label: 'Rosso' },
-      { value: '#7C3AED', label: 'Viola' },
-      { value: '#0891B2', label: 'Ciano' },
-      { value: '#DB2777', label: 'Rosa' },
-      { value: '#65A30D', label: 'Lime' },
+      { value: '#FF0000', label: 'Rosso' },
+      { value: '#0066FF', label: 'Blu' },
+      { value: '#00CC00', label: 'Verde' },
+      { value: '#FF6600', label: 'Arancione' },
+      { value: '#9900FF', label: 'Viola' },
+      { value: '#FF0099', label: 'Fucsia' },
+      { value: '#00CCCC', label: 'Turchese' },
+      { value: '#CCCC00', label: 'Giallo' },
     ];
 
     return `
