@@ -1,0 +1,518 @@
+/* ================================================
+   CALENDARIO SPECIALISTI - CSS
+   ================================================ */
+
+/* Modulo container */
+.cal-spec-module {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 12px;
+}
+
+/* Header */
+.cal-spec-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.cal-spec-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cal-spec-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Legenda */
+.cal-spec-legenda {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 12px;
+  color: var(--text-secondary, #64748b);
+  padding: 6px 0;
+}
+
+.legenda-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legenda-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.legenda-dot.disponibile {
+  background: #dcfce7;
+  border: 1px solid #86efac;
+}
+
+.legenda-dot.occupato {
+  background: #dbeafe;
+  border: 1px solid #93c5fd;
+}
+
+.legenda-dot.non-disponibile {
+  background: #fee2e2;
+  border: 1px solid #fca5a5;
+}
+
+.legenda-dot.vuoto {
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+}
+
+/* Calendario container */
+.cal-spec-container {
+  flex: 1;
+  overflow: auto;
+  border: 1px solid var(--border-color, #e2e8f0);
+  border-radius: 8px;
+  background: white;
+}
+
+.cal-spec-content {
+  min-width: 100%;
+}
+
+/* ================================================
+   GRIGLIA - Vista Giorno
+   ================================================ */
+
+.cs-griglia {
+  width: 100%;
+}
+
+.cs-griglia-header {
+  display: flex;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: white;
+  border-bottom: 2px solid var(--border-color, #e2e8f0);
+}
+
+.cs-angolo {
+  min-width: 70px;
+  max-width: 70px;
+  padding: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary, #64748b);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cs-angolo-compact {
+  min-width: 44px;
+  max-width: 44px;
+  padding: 4px;
+}
+
+.cs-spec-header {
+  flex: 1;
+  min-width: 140px;
+  padding: 10px 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-left: 1px solid var(--border-color, #e2e8f0);
+}
+
+.cs-spec-header-compact {
+  min-width: 50px;
+  padding: 6px 4px;
+  justify-content: center;
+}
+
+.cs-spec-avatar {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.cs-spec-iniziali {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.cs-spec-nome {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary, #1e293b);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Righe e slots */
+.cs-griglia-body {
+  position: relative;
+}
+
+.cs-riga {
+  display: flex;
+  border-bottom: 1px solid var(--border-color, #e2e8f0);
+  min-height: 40px;
+}
+
+.cs-riga-mezza {
+  border-bottom: 1px dashed #f1f5f9;
+  min-height: 36px;
+}
+
+.cs-label-ora {
+  min-width: 70px;
+  max-width: 70px;
+  padding: 4px 8px;
+  font-size: 11px;
+  color: var(--text-secondary, #64748b);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  border-right: 1px solid var(--border-color, #e2e8f0);
+}
+
+.cs-label-ora-compact {
+  min-width: 44px;
+  max-width: 44px;
+  font-size: 10px;
+  padding: 2px 4px;
+}
+
+/* Slot states */
+.cs-slot {
+  flex: 1;
+  min-width: 140px;
+  padding: 2px 4px;
+  border-left: 1px solid var(--border-color, #e2e8f0);
+  cursor: default;
+  display: flex;
+  align-items: center;
+  transition: background 0.15s;
+}
+
+.cs-slot-compact {
+  min-width: 50px;
+  padding: 1px 2px;
+  min-height: 28px;
+  justify-content: center;
+}
+
+.cs-slot-disponibile {
+  background: #f0fdf4;
+  cursor: pointer;
+}
+
+.cs-slot-disponibile:hover {
+  background: #dcfce7;
+}
+
+.cs-slot-label {
+  font-size: 10px;
+  color: #16a34a;
+  font-weight: 500;
+}
+
+.cs-slot-occupato {
+  background: #eff6ff;
+  cursor: pointer;
+}
+
+.cs-slot-occupato:hover {
+  background: #dbeafe;
+}
+
+.cs-slot-non-disponibile {
+  background: #fef2f2;
+}
+
+.cs-slot-non-disponibile .cs-slot-label {
+  color: #dc2626;
+  font-size: 10px;
+}
+
+.cs-slot-vuoto {
+  background: #f8fafc;
+}
+
+/* Evento nel slot */
+.cs-slot-evento {
+  width: 100%;
+  padding: 3px 6px;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.cs-evento-ora {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-secondary, #64748b);
+  display: block;
+}
+
+.cs-evento-titolo {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-primary, #1e293b);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Dot per vista compatta settimana */
+.cs-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+/* ================================================
+   VISTA SETTIMANA
+   ================================================ */
+
+.cs-settimana-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.cs-giorno-blocco {
+  border-bottom: 2px solid var(--border-color, #e2e8f0);
+}
+
+.cs-giorno-blocco:last-child {
+  border-bottom: none;
+}
+
+.cs-giorno-titolo {
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary, #1e293b);
+  background: #f8fafc;
+  border-bottom: 1px solid var(--border-color, #e2e8f0);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.cs-oggi-title {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.cs-oggi {
+  /* No extra border needed */
+}
+
+.cs-griglia-compact .cs-riga {
+  min-height: 28px;
+}
+
+.cs-griglia-header-compact {
+  position: static;
+}
+
+/* ================================================
+   MODALS EXTRA STYLES
+   ================================================ */
+
+/* Specialisti lista */
+.lista-specialisti {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.spec-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  border: 1px solid var(--border-color, #e2e8f0);
+  border-radius: 8px;
+  background: #f8fafc;
+}
+
+.spec-card-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.spec-card-nome {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-primary, #1e293b);
+}
+
+.spec-card-dettaglio {
+  font-size: 12px;
+  color: var(--text-secondary, #64748b);
+}
+
+.spec-card-actions {
+  display: flex;
+  gap: 6px;
+}
+
+/* Disponibilità */
+.giorni-settimana-selector {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+
+.giorno-check {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 4px 10px;
+  border: 1px solid var(--border-color, #e2e8f0);
+  border-radius: 6px;
+  background: white;
+  transition: all 0.15s;
+}
+
+.giorno-check:has(input:checked) {
+  background: #eff6ff;
+  border-color: #3b82f6;
+  color: #2563eb;
+}
+
+.giorno-check input {
+  display: none;
+}
+
+/* Lista disponibilità */
+.lista-disponibilita {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.disp-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border: 1px solid var(--border-color, #e2e8f0);
+  border-radius: 6px;
+  background: white;
+  font-size: 13px;
+}
+
+.disp-card-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.disp-card-tipo {
+  font-weight: 600;
+}
+
+.disp-card-periodo {
+  color: var(--text-secondary, #64748b);
+}
+
+.disp-card-orario {
+  font-weight: 500;
+}
+
+/* Prenotazione riepilogo */
+.prenota-riepilogo {
+  margin-bottom: 16px;
+  padding: 12px;
+  background: #f0fdf4;
+  border: 1px solid #86efac;
+  border-radius: 8px;
+}
+
+.prenota-riepilogo-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.prenota-riepilogo-content strong {
+  font-size: 14px;
+  color: var(--text-primary, #1e293b);
+}
+
+/* Modal large */
+.modal-lg .modal-container,
+.modal-container.modal-lg {
+  max-width: 700px;
+}
+
+/* Button sm */
+.btn-sm {
+  padding: 4px 10px;
+  font-size: 12px;
+  height: auto;
+  min-height: auto;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .cal-spec-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .cal-spec-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .cs-slot {
+    min-width: 80px;
+  }
+
+  .cs-spec-header {
+    min-width: 80px;
+  }
+
+  .cs-spec-nome {
+    display: none;
+  }
+}
