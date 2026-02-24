@@ -230,12 +230,12 @@
 }
 
 .cs-slot-disponibile {
-  background: #f0fdf4;
+  background: #bbf7d0;
   cursor: pointer;
 }
 
 .cs-slot-disponibile:hover {
-  background: #dcfce7;
+  background: #86efac;
 }
 
 .cs-slot-label {
@@ -254,7 +254,7 @@
 }
 
 .cs-slot-non-disponibile {
-  background: #fef2f2;
+  background: #fecaca;
 }
 
 .cs-slot-non-disponibile .cs-slot-label {
