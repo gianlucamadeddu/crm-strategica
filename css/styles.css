@@ -39,6 +39,7 @@
   /* Layout */
   --sidebar-width: 260px;
   --header-height: 64px;
+  --mobile-topbar-height: 56px;
   
   /* Ombre (Stile Relief) */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -246,6 +247,67 @@ body {
 
 .app-container.active {
   display: flex;
+}
+
+/* ===== MOBILE TOP BAR ===== */
+.mobile-topbar {
+  display: none; /* nascosto su desktop */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--mobile-topbar-height);
+  background: var(--white);
+  border-bottom: 1px solid var(--gray-200);
+  box-shadow: var(--shadow);
+  align-items: center;
+  padding: 0 1rem;
+  gap: 1rem;
+  z-index: 150;
+}
+
+.btn-hamburger {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius);
+  color: var(--gray-600);
+  cursor: pointer;
+  transition: all var(--transition);
+  flex-shrink: 0;
+}
+
+.btn-hamburger:hover {
+  background: var(--gray-100);
+  color: var(--dark);
+}
+
+.btn-hamburger svg {
+  width: 24px;
+  height: 24px;
+}
+
+.mobile-logo {
+  height: 30px;
+  width: auto;
+}
+
+/* ===== SIDEBAR OVERLAY (mobile) ===== */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 160; /* sotto la sidebar (200), sopra il contenuto */
+  backdrop-filter: blur(2px);
+}
+
+.sidebar-overlay.active {
+  display: block;
 }
 
 /* ===== SIDEBAR ===== */
@@ -602,16 +664,47 @@ body {
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
-  .sidebar {
-    transform: translateX(-100%);
-    transition: transform var(--transition);
+
+  /* Mostra il topbar mobile */
+  .mobile-topbar {
+    display: flex;
   }
-  
+
+  /* La sidebar scivola da sinistra */
+  .sidebar {
+    z-index: 200;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
   .sidebar.open {
     transform: translateX(0);
+    box-shadow: var(--shadow-lg);
   }
-  
+
+  /* Il contenuto non ha più il margine della sidebar */
   .main-content {
     margin-left: 0;
+    padding-top: var(--mobile-topbar-height);
+  }
+
+  /* Riduce il padding del body su schermi piccoli */
+  .content-body {
+    padding: 1rem;
+  }
+
+  /* Titolo pagina più piccolo su mobile */
+  .content-title {
+    font-size: 1.125rem;
+  }
+
+  /* Toast a larghezza piena su mobile */
+  .toast-container {
+    left: 1rem;
+    right: 1rem;
+  }
+
+  .toast {
+    max-width: 100%;
   }
 }
